@@ -45,17 +45,10 @@ public class TextAnalyzer {
 	}
 	
 	public static void sortAndPrintText (HashMap<String, Integer> analyzedText){
+		
 		List<Entry<String, Integer>> sortedText = new LinkedList<Entry<String, Integer>>(analyzedText.entrySet());
+		Collections.sort(sortedText, new TextComparator());
 		
-		Collections.sort(sortedText, new Comparator<Entry<String, Integer>>(){
-			@Override
-			public int compare(Entry<String,Integer> o1, Entry<String, Integer> o2) {
-				return o1.getValue().compareTo(o2.getValue());
-			}
-		});
-		
-		// Print words by frequency in descending order
-		Collections.reverse(sortedText);
 		for (Entry<String, Integer> count : sortedText) {
 			System.out.println(count);
 		}
