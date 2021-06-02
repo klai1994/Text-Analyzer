@@ -22,6 +22,8 @@ public class TextAnalyzer {
 	public static HashMap<String, Integer> AnalyzeText(File file) throws FileNotFoundException {
 		
 		Scanner scanner = new Scanner(file);
+		scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+		
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
 		
 		while (scanner.hasNextLine()) {	
@@ -29,9 +31,6 @@ public class TextAnalyzer {
 			String parsedLine[] = scanner.nextLine().replaceAll("[^a-zA-Z]", " ").toLowerCase().split("\\s+");
 
 			for (String word : parsedLine) {
-				// Skips empty lines
-				if (word == "") {continue;}
-				
 				if(!wordCounts.containsKey(word)) {
 					wordCounts.put(word, 1);
 				} else {
