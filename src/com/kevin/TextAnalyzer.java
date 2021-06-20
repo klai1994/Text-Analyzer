@@ -8,7 +8,7 @@ public class TextAnalyzer {
 	
 	public static void main(String[] args) {
 		
-		File file = new File("C:\\Users\\SupaD\\eclipse-workspace\\Text-Analyzer\\src\\com\\kevin\\poem.txt");
+		File file = new File("src\\com\\kevin\\poem.txt");
 		
 		try {
 			sortAndPrintText(AnalyzeText(file));			
@@ -23,14 +23,14 @@ public class TextAnalyzer {
 		
 		Scanner scanner = new Scanner(file);
 		scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-		
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
 		
 		while (scanner.hasNextLine()) {	
 			// Removes punctuation
-			String parsedLine[] = scanner.nextLine().replaceAll("[^a-zA-Z]", " ").toLowerCase().split("\\s+");
+			String parsedLine[] = scanner.nextLine().replaceAll("[^a-zA-Z']", " ").toLowerCase().split("\\s+");
 
 			for (String word : parsedLine) {
+				if (word == "") continue;
 				if(!wordCounts.containsKey(word)) {
 					wordCounts.put(word, 1);
 				} else {
@@ -39,7 +39,7 @@ public class TextAnalyzer {
 				
 			}
 		}
-		
+		scanner.close();
 		return wordCounts;	
 	}
 	
