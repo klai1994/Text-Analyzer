@@ -2,52 +2,52 @@ package com.kevin;
 
 import java.io.*;
 import javafx.application.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	
-	Button button;
-	Text text;
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage window) throws Exception {
 		
-		primaryStage.setTitle("Text Analyzer by Kevin Lai");
+		window.setTitle("Text Analyzer by Kevin Lai");
+		Button button = new Button("Run Analyzer");
 		
-		button = new Button();
-		button.setText("Run Analyzer");
-		text = new Text();
+		Font font = Font.font ("Monospaced", 12);
+		Label label = new Label();
+		Label records = new Label();
 		
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
+		button.setFont(font);
+		label.setFont(font);
+		records.setFont(font);
+		
+		button.setOnAction(e-> {
 				try {
-					TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\poem.txt"));	
-					text.setText(textAnalyzer.analyzeText());
+					TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\text.txt"));
+					label.setText("Top 20 words");
+					records.setText(textAnalyzer.analyzeText(20));
 				} 
-				catch(FileNotFoundException e) {
-					text.setText("poem.txt not found!");
+				catch(FileNotFoundException exception) {
+					records.setText("Text file not found!");
 				}
-			}
-		});
+			});
 
-		StackPane layout = new StackPane();
-		layout.getChildren().add(button);
-		layout.getChildren().add(text);
+		VBox layout = new VBox(20);
+		layout.getChildren().addAll(button, label, records);
+		layout.setPadding(new Insets(20, 20, 20, 20));
 		
-		Scene scene = new Scene(layout, 400, 400);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		Scene scene = new Scene(layout, 500, 500);
+		window.setScene(scene);
+		window.show();
 		
 	}
 
