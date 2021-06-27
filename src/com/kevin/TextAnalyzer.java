@@ -12,15 +12,18 @@ import java.util.Map.Entry;
 
 public class TextAnalyzer {
 	
-	File file;
-	
-	public TextAnalyzer(File file) {
-		this.file = file;
+	Scanner scanner;
+
+	public TextAnalyzer(File file) throws FileNotFoundException {
+		scanner = new Scanner(file);
 	}
 	
-	public String analyzeText(int lines) throws FileNotFoundException {
+	public TextAnalyzer(String string) {
+		scanner = new Scanner(string);
+	}
+	
+	public HashMap<String, Integer> countWords() {
 
-		Scanner scanner = new Scanner(file);
 		scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
 
@@ -39,10 +42,10 @@ public class TextAnalyzer {
 			}
 		}
 		scanner.close();
-		return sortText(wordCounts, lines);
+		return wordCounts;
 	}
 
-	private String sortText(HashMap<String, Integer> analyzedText, int lines) {
+	public String sortText(HashMap<String, Integer> analyzedText, int rankings) {
 
 		List<Entry<String, Integer>> wordCounts = new LinkedList<Entry<String, Integer>>(analyzedText.entrySet());
 		Collections.sort(wordCounts, new Comparator<Entry<String, Integer>>() {
@@ -53,17 +56,17 @@ public class TextAnalyzer {
 		});
 
 		String sortedText = "";
-		int count = 1;
+		int rank = 1;
 		for (Entry<String, Integer> entry : wordCounts) {
-			if (count > lines) break; 
-			sortedText += formatLine(entry, count);
-			count++;
+			if (rank > rankings) break; 
+			sortedText += formatLine(entry, rank);
+			rank++;
 		}
 
 		return sortedText;
 	}
 	
-	private String formatLine(Entry<String, Integer> word, int count) {
+	private String formatLine(Entry<String, Integer> word, int rank) {
 		
 		// Text must be monospaced to format correctly
 		String formattedLine;
@@ -71,7 +74,7 @@ public class TextAnalyzer {
 		String indent = "                  "; // 20 spaces
 
 		
-		formattedLine = "#" + count + ") " + capitalizedWord;
+		formattedLine = rank + ") " + capitalizedWord;
 		formattedLine += indent.substring(0, indent.length() - formattedLine.length());
 		formattedLine += word.getValue() + "\n";
 		

@@ -21,31 +21,30 @@ public class Main extends Application {
 		
 		window.setTitle("Text Analyzer by Kevin Lai");
 		Button button = new Button("Run Analyzer");
-		
-		Font font = Font.font ("Monospaced", 12);
 		Label label = new Label();
 		Label records = new Label();
 		
+		Font font = Font.font ("Monospaced", 12);	
 		button.setFont(font);
 		label.setFont(font);
 		records.setFont(font);
+		label.setText("Top 20 Words");
 		
 		button.setOnAction(e-> {
 				try {
 					TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\text.txt"));
-					label.setText("Top 20 words");
-					records.setText(textAnalyzer.analyzeText(20));
+					records.setText(textAnalyzer.sortText(textAnalyzer.countWords(), 20));
 				} 
 				catch(FileNotFoundException exception) {
 					records.setText("Text file not found!");
 				}
 			});
 
-		VBox layout = new VBox(20);
-		layout.getChildren().addAll(button, label, records);
-		layout.setPadding(new Insets(20, 20, 20, 20));
+		VBox vBox = new VBox(20);
+		vBox.getChildren().addAll(button, label, records);
+		vBox.setPadding(new Insets(20, 20, 20, 20));
 		
-		Scene scene = new Scene(layout, 500, 500);
+		Scene scene = new Scene(vBox, 500, 500);
 		window.setScene(scene);
 		window.show();
 		
