@@ -10,6 +10,14 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/***
+ * This application takes in text from a file as input and counts how many times each word has occurred.
+ * The program will automatically format the text - any text file with space separated words will be valid. 
+ * This main creates a window and interfaces with the user.
+ * It then creates a sorted tally, showing the top 10 most common words. 
+ * @author Kevin
+ * 
+ */
 public class Main extends Application {
 	
 	public static void main(String[] args) {

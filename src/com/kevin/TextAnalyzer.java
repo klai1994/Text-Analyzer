@@ -10,18 +10,38 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
+
+/***
+ * The TextAnalyzer class handles the logic and formatting of the input. Going line by line, the text file is
+ * broken down into lines and punctuation is removed, then into words and counted/sorted. 
+ * @author Kevin
+ *
+ */
 public class TextAnalyzer {
 	
 	Scanner scanner;
-
+	
+	/***
+	 * This is the intended constructor method, with a text filed passed as an argument.
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
 	public TextAnalyzer(File file) throws FileNotFoundException {
 		scanner = new Scanner(file);
 	}
 	
+	/***
+	 * This constructor may optionally be used for testing purposes to pass in a string directly.
+	 * @param string
+	 */
 	public TextAnalyzer(String string) {
 		scanner = new Scanner(string);
 	}
 	
+	/***
+	 * countWords() returns a HashMap with the word as the key and the number of occurrences as the value. 
+	 * @return
+	 */
 	public HashMap<String, Integer> countWords() {
 
 		scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
@@ -45,6 +65,13 @@ public class TextAnalyzer {
 		return wordCounts;
 	}
 
+	/***
+	 * This method is called using the output of wordCounts() and the data from the map is extracted and sorted.
+	 * It returns the string containing a user specified number of ranked words and their counts.
+	 * @param analyzedText The output from countWords().
+	 * @param rankings How many rankings to count (i.e top 10, top 20).
+	 * @return The text containing the words and their occurrences in descending order.
+	 */
 	public String sortText(HashMap<String, Integer> analyzedText, int rankings) {
 
 		List<Entry<String, Integer>> wordCounts = new LinkedList<Entry<String, Integer>>(analyzedText.entrySet());
