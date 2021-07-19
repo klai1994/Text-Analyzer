@@ -27,8 +27,8 @@ class AnalyzeTextTest {
 			TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\text.txt"));
 			resultMap = textAnalyzer.countWords();
 		} 
-		catch(FileNotFoundException exception) {
-			System.out.println("File not found!");
+		catch(Exception e) {
+			e.printStackTrace();;
 		}
 
 		assertTrue(testMap.get("the") == resultMap.get("the"));

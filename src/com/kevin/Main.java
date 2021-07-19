@@ -1,6 +1,7 @@
 package com.kevin;
 
 import java.io.*;
+
 import javafx.application.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -27,6 +28,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage window) throws Exception {
 		
+		setStage(window);
+		
+	}
+	
+	private void setStage(Stage window) {
 		window.setTitle("Text Analyzer by Kevin Lai");
 		Button button = new Button("Run Analyzer");
 		Label label = new Label();
@@ -43,8 +49,8 @@ public class Main extends Application {
 					TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\text.txt"));
 					records.setText(textAnalyzer.sortText(textAnalyzer.countWords(), 20));
 				} 
-				catch(FileNotFoundException exception) {
-					records.setText("Text file not found!");
+				catch(Exception exception) {
+					exception.printStackTrace();
 				}
 			});
 
@@ -55,7 +61,6 @@ public class Main extends Application {
 		Scene scene = new Scene(vBox, 500, 500);
 		window.setScene(scene);
 		window.show();
-		
 	}
 
 	

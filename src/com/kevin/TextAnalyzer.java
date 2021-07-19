@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Map.Entry;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 
 /***
@@ -38,12 +41,35 @@ public class TextAnalyzer {
 		scanner = new Scanner(string);
 	}
 	
+	private Connection getDbConnection() throws Exception {
+		try {
+			String driver = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/";
+			String username = "kevin";
+			String password = "1234";
+			
+			Class.forName(driver);
+			Connection conn = DriverManager.getConnection(url, username, password);
+			System.out.println("Connection successful");
+			return conn;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 	/***
 	 * countWords() returns a HashMap with the word as the key and the number of occurrences as the value. 
 	 * @return
 	 */
-	public HashMap<String, Integer> countWords() {
-
+	public HashMap<String, Integer> countWords() throws Exception {
+		
+		Connection conn = getDbConnection();
+		Statement statement = conn.createStatement();
+		statement.execute("use word_occurrences;");
+		
 		scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
 
@@ -59,8 +85,13 @@ public class TextAnalyzer {
 					wordCounts.put(word, wordCounts.get(word) + 1);
 				}
 
+				String sql = "insert into word (word) values (\'" + word + "\');";
+				statement.execute(sql);
+				
 			}
 		}
+		
+		conn.close();
 		scanner.close();
 		return wordCounts;
 	}
