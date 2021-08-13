@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /***
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
  * 
  */
 public class Main extends Application {
+	
+	File text;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -33,32 +36,51 @@ public class Main extends Application {
 	}
 	
 	private void setStage(Stage window) {
-		window.setTitle("Text Analyzer by Kevin Lai");
-		Button button = new Button("Run Analyzer");
+		// Set window
+		window.setTitle("Text Analyzer");
+		Button runButton = new Button("Run Analyzer");
+		Button uploadButton = new Button("Choose text");
 		Label label = new Label();
-		Label records = new Label();
+		Label records = new Label("Top 20 Words");
 		
+		// Set fonts (must be monospaced to line up correctly
 		Font font = Font.font ("Monospaced", 12);	
-		button.setFont(font);
+		runButton.setFont(font);
+		uploadButton.setFont(font);;
 		label.setFont(font);
 		records.setFont(font);
-		label.setText("Top 20 Words");
 		
-		button.setOnAction(e-> {
+		// Upload file button on click event handler
+		uploadButton.setOnAction(e ->{
+			FileChooser fileChooser = new FileChooser();
+			File selectedFile = fileChooser.showOpenDialog(null);
+			if (selectedFile != null) {
+				text = selectedFile;
+			}
+		});
+		
+		// Run button on click event handler
+		runButton.setOnAction(e-> {
 				try {
-					TextAnalyzer textAnalyzer = new TextAnalyzer(new File("src\\com\\kevin\\text.txt"));
+					TextAnalyzer textAnalyzer = new TextAnalyzer(text);
 					records.setText(textAnalyzer.sortText(textAnalyzer.countWords(), 20));
 				} 
 				catch(Exception exception) {
-					exception.printStackTrace();
+					records.setText("Choose a file first!");
 				}
 			});
 
-		VBox vBox = new VBox(20);
-		vBox.getChildren().addAll(button, label, records);
-		vBox.setPadding(new Insets(20, 20, 20, 20));
+		// Button pane
+		BorderPane pane = new BorderPane();
+		pane.setLeft(runButton);
+		pane.setCenter(uploadButton);
+		pane.setPadding(new Insets(10, 10, 0, 0));
 		
-		Scene scene = new Scene(vBox, 500, 500);
+		// Arrange and show window
+		VBox vBox = new VBox(20);
+		vBox.getChildren().addAll(pane, label, records);
+		vBox.setPadding(new Insets(15, 15, 15, 15));
+		Scene scene = new Scene(vBox, 250, 450);
 		window.setScene(scene);
 		window.show();
 	}
