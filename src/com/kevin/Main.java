@@ -40,7 +40,7 @@ public class Main extends Application {
 		window.setTitle("Text Analyzer");
 		Button runButton = new Button("Run Analyzer");
 		Button uploadButton = new Button("Choose text");
-		Label label = new Label();
+		Label label = new Label("Choose a file");
 		Label records = new Label("Top 20 Words");
 		
 		// Set fonts (must be monospaced to line up correctly
@@ -56,6 +56,7 @@ public class Main extends Application {
 			File selectedFile = fileChooser.showOpenDialog(null);
 			if (selectedFile != null) {
 				text = selectedFile;
+				label.setText(selectedFile.getName());
 			}
 		});
 		
@@ -66,7 +67,7 @@ public class Main extends Application {
 					records.setText(textAnalyzer.sortText(textAnalyzer.countWords(), 20));
 				} 
 				catch(Exception exception) {
-					records.setText("Choose a file first!");
+					label.setText("Invalid file");
 				}
 			});
 
